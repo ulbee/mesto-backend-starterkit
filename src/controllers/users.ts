@@ -28,30 +28,29 @@ const login = (req: Request, res: Response, next: NextFunction) => {
     .catch(next);
 };
 
-// const createUser = (req: Request, res: Response, next: NextFunction) => {
 const createUser = (req: Request, res: Response, next: NextFunction) => {
   // const {
   //   name, about, avatar, password, email,
   // } = req.body;
-  throw new Error('TESTTTTT');
 
-  // bcrypt.hash(req.body.password, 10)
-  //   .then((hash) => {
-  //     throw new Error(` text ${hash}`);
-  //     // return User.create({
-  //     //   name, about, avatar, email, password: hash,
-  //     // });
-  //   })
-  //   .then((data) => res.status(201).send(data))
-  //   .catch((err) => {
-  //     if (err.name === 'ValidationError') {
-  //       next(new BadRequestError(err.message));
-  //     } else if (err.code === 11000) {
-  //       next(new ConflictError('Пользователь с данным email уже существует'));
-  //     } else {
-  //       next({ err });
-  //     }
-  //   });
+  bcrypt.hash(req.body.password, 10)
+    .then((hash) => {
+      throw new Error(` text ${hash}`);
+      // return User.create({
+      //   name, about, avatar, email, password: hash,
+      // });
+    })
+    .then((data) => res.status(201).send(data))
+    .catch(() => {
+      throw new Error(` text ${req.body.password}`);
+      // if (err.name === 'ValidationError') {
+      //   next(new BadRequestError(err.message));
+      // } else if (err.code === 11000) {
+      //   next(new ConflictError('Пользователь с данным email уже существует'));
+      // } else {
+      //   next({ err });
+      // }
+    });
 };
 
 const getUserData = (id: string, res: Response, next: NextFunction) => {
