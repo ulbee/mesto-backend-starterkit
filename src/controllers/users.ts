@@ -42,7 +42,7 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
     })
     .then((data) => res.status(201).send(data))
     .catch((err) => {
-      next({ err });
+      next(new Error(`!!! ${JSON.stringify(err)}`));
       // if (err.name === 'ValidationError') {
       //   next(new BadRequestError(err.message));
       // } else if (err.code === 11000) {
