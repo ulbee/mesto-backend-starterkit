@@ -7,9 +7,9 @@ import {
 } from 'express';
 import User from '../models/user';
 import { JWT_SECRET } from '../config';
-import BadRequestError from '../errors/bad-request-error';
+// import BadRequestError from '../errors/bad-request-error';
 import NotFoundError from '../errors/not-found-error';
-import ConflictError from '../errors/conflict-error';
+// import ConflictError from '../errors/conflict-error';
 
 const login = (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body;
@@ -42,7 +42,7 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
     })
     .then((data) => res.status(201).send(data))
     .catch(() => {
-      throw new Error(` text ${req.body.password}`);
+      next(new Error(` text ${req.body.password}`));
       // if (err.name === 'ValidationError') {
       //   next(new BadRequestError(err.message));
       // } else if (err.code === 11000) {
