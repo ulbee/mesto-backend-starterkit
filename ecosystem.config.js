@@ -12,6 +12,7 @@ module.exports = {
 
   deploy: {
     production: {
+      key: '~/.ssh/id_rsa',
       user: DEPLOY_USER,
       host: DEPLOY_HOST,
       ref: DEPLOY_REF,
