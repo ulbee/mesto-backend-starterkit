@@ -3,7 +3,7 @@ import 'dotenv/config';
 import express from 'express';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
-import { errors } from 'celebrate';
+// import { errors } from 'celebrate';
 import cors from 'cors';
 import errorHandler from './middlewares/error-handler';
 import { DB_ADDRESS } from './config';
@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(routes);
-app.use(errors());
+// app.use(errors());
 app.use(errorHandler);
 
 // eslint-disable-next-line no-console
