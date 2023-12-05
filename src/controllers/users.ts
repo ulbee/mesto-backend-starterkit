@@ -7,9 +7,9 @@ import {
 } from 'express';
 import User from '../models/user';
 import { JWT_SECRET } from '../config';
-// import BadRequestError from '../errors/bad-request-error';
+import BadRequestError from '../errors/bad-request-error';
 import NotFoundError from '../errors/not-found-error';
-// import ConflictError from '../errors/conflict-error';
+import ConflictError from '../errors/conflict-error';
 
 const login = (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body;
@@ -29,27 +29,23 @@ const login = (req: Request, res: Response, next: NextFunction) => {
 };
 
 const createUser = (req: Request, res: Response, next: NextFunction) => {
-  // const {
-  //   name, about, avatar, password, email,
-  // } = req.body;
+  const {
+    name, about, avatar, password, email,
+  } = req.body;
 
-  bcrypt.hash(req.body.password, 10)
-    .then(() => {
-      // throw new Error(` !!! ${hash}`);
-      // return User.create({
-      //   name, about, avatar, email, password: hash,
-      // });
-    })
+  bcrypt.hash(password, 10)
+    .then((hash) => User.create({
+      name, about, avatar, email, password: hash,
+    }))
     .then((data) => res.status(201).send(data))
     .catch((err) => {
-      next(new Error(`!!! ${JSON.stringify(err)}`));
-      // if (err.name === 'ValidationError') {
-      //   next(new BadRequestError(err.message));
-      // } else if (err.code === 11000) {
-      //   next(new ConflictError('Пользователь с данным email уже существует'));
-      // } else {
-      //   next({ err });
-      // }
+      if (err.name === 'ValidationError') {
+        next(new BadRequestError(err.message));
+      } else if (err.code === 11000) {
+        next(new ConflictError('Пользователь с данным email уже существует'));
+      } else {
+        next({ err });
+      }
     });
 };
 
