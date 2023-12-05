@@ -29,14 +29,17 @@ const login = (req: Request, res: Response, next: NextFunction) => {
 };
 
 const createUser = (req: Request, res: Response, next: NextFunction) => {
-  const {
-    name, about, avatar, password, email,
-  } = req.body;
+  // const {
+  //   name, about, avatar, password, email,
+  // } = req.body;
 
-  bcrypt.hash(password, 10)
-    .then((hash) => User.create({
-      name, about, avatar, email, password: hash,
-    }))
+  bcrypt.hash(req.body.password, 10)
+    .then((hash) => {
+      throw new Error(hash);
+      // return User.create({
+      //   name, about, avatar, email, password: hash,
+      // });
+    })
     .then((data) => res.status(201).send(data))
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -44,7 +47,7 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
       } else if (err.code === 11000) {
         next(new ConflictError('Пользователь с данным email уже существует'));
       } else {
-        next({ err: { err, req } });
+        next({ err });
       }
     });
 };
